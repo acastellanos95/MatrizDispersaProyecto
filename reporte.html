@@ -1,0 +1,417 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/default.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
+<link rel="stylesheet" href="file:////home/andre/.vscode/extensions/goessner.mdmath-2.7.4/themes/default/style.css">
+
+</head>
+<body class="markdown-body">
+<h1 id="proyecto-implementacic3b3n-de-matrices-dispersas-usando-listas-doblemente-ligadas-y-soporte-de-multiplicacic3b3n-entre-matrices-y-escalar-matriz-suma-entre-matrices">Proyecto: Implementación de matrices dispersas usando listas doblemente ligadas y soporte de multiplicación entre matrices y escalar-matriz, suma entre matrices.</h1>
+<h2 id="cinvestav---departamento-de-computacic3b3n">CINVESTAV - Departamento de computación</h2>
+<h3 id="autor-andrc3a9-fabic3a1n-castellanos-aldama">Autor: André Fabián Castellanos Aldama</h3>
+<h3 id="3-de-diciembre-del-2021">3 de Diciembre del 2021</h3>
+<div  ></div>
+<br>
+<p><strong>El código lo puede encontrar en el siguiente <a href="https://github.com/acastellanos95/MatrizDispersaProyecto">link</a></strong></p>
+<h3 id="objetivo">Objetivo</h3>
+<ol>
+<li>Representar adecuadamente las matrices con listas doblemente ligadas entre filas y columnas.</li>
+<li>Implementar inserción de valores en lugar.</li>
+<li>Implementar suma entre matrices.</li>
+<li>Implementar multiplicación entre matrices y entre una matriz y un escalar.</li>
+<li>Mostrar resultados de una correcta implementación.</li>
+</ol>
+<h3 id="representacic3b3n-de-matrices-dispersas-con-listas-doblemente-ligadas">Representación de matrices dispersas con listas doblemente ligadas.</h3>
+<p>En vez de representar que los símbolos &lt;&gt; representen un arreglo, en este contexto será una lista doblemente ligada, donde sus elementos están separadas por comas y un par algebraico se representa como (). Para las matrices dispersas y tratando de seguir una representación acorde a lo pedido en clase, se propone lo siguiente:</p>
+<p>Cada fila tendrá su valor y una lista de sus valores dentro de la misma que tendrán su valor de columna y su valor. Si un elemento de la matriz es 0, entonces no aparece en ninguna lista. Ejemplo, sea la siguiente matriz dispersa con dimension 4x4:</p>
+<section><eqn><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>&lt;</mo><mo stretchy="false">(</mo><mi>f</mi><mi>i</mi><mi>l</mi><mi>a</mi><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mo>&lt;</mo><mo stretchy="false">(</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>u</mi><mi>m</mi><mi>n</mi><mi>a</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mo>=</mo><mn>2</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mo stretchy="false">(</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>u</mi><mi>m</mi><mi>n</mi><mi>a</mi><mo>=</mo><mn>2</mn><mo separator="true">,</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mo>=</mo><mn>8</mn><mo stretchy="false">)</mo><mo>&gt;</mo><mo stretchy="false">)</mo><mo separator="true">,</mo><mspace linebreak="newline"></mspace><mo stretchy="false">(</mo><mi>f</mi><mi>i</mi><mi>l</mi><mi>a</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mo>&lt;</mo><mo stretchy="false">(</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>u</mi><mi>m</mi><mi>n</mi><mi>a</mi><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mo>=</mo><mn>3</mn><mo stretchy="false">)</mo><mo>&gt;</mo><mo stretchy="false">)</mo><mo separator="true">,</mo><mspace linebreak="newline"></mspace><mo stretchy="false">(</mo><mi>f</mi><mi>i</mi><mi>l</mi><mi>a</mi><mo>=</mo><mn>3</mn><mo separator="true">,</mo><mo>&lt;</mo><mo stretchy="false">(</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>u</mi><mi>m</mi><mi>n</mi><mi>a</mi><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mo>=</mo><mn>1</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mo stretchy="false">(</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>u</mi><mi>m</mi><mi>n</mi><mi>a</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mo>=</mo><mn>7</mn><mo stretchy="false">)</mo><mo>&gt;</mo><mo stretchy="false">)</mo><mo>&gt;</mo><mspace linebreak="newline"></mspace><mo>=</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.1600em" columnalign="center center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>8</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>7</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+  &lt;(fila=0,&lt;(columna=1, valor=2), (columna=2, valor=8)&gt;),\\
+    (fila=1,&lt;(columna=0,valor=3)&gt;),\\
+    (fila=3,&lt;(columna=0,valor=1),(columna=1,valor=7)&gt;)&gt;\\
+    =
+    \left(\begin{matrix}
+    0 &amp; 2 &amp; 8 &amp; 0\\
+    3 &amp; 0 &amp; 0 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 0\\
+    1 &amp; 7 &amp; 0 &amp; 0
+    \end{matrix}\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">co</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">mna</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord mathnormal">co</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">mna</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">8</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mpunct">,</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">co</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">mna</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mpunct">,</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">co</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">mna</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord mathnormal">co</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">mna</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">7</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:4.80006em;vertical-align:-2.15003em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65003em;"><span style="top:-1.7110100000000004em;"><span class="pstrut" style="height:3.2160200000000003em;"></span><span class="delimsizinginner delim-size4"><span>⎝</span></span></span><span style="top:-2.85801em;"><span class="pstrut" style="height:3.2160200000000003em;"></span><span style="height:1.2160200000000003em;width:0.875em;"><svg width='0.875em' height='1.2160200000000003em' style='width:0.875em' viewBox='0 0 875 1216' preserveAspectRatio='xMinYMin'><path d='M291 0 H417 V1216 H291z M291 0 H417 V1216 H291z'/></svg></span></span><span style="top:-4.71105em;"><span class="pstrut" style="height:3.2160200000000003em;"></span><span class="delimsizinginner delim-size4"><span>⎛</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15003em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.6500000000000004em;"><span style="top:-4.8100000000000005em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-1.2099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.1500000000000004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.6500000000000004em;"><span style="top:-4.8100000000000005em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-1.2099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">7</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.1500000000000004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.6500000000000004em;"><span style="top:-4.8100000000000005em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-1.2099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.1500000000000004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.6500000000000004em;"><span style="top:-4.8100000000000005em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-1.2099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.1500000000000004em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65003em;"><span style="top:-1.7110100000000004em;"><span class="pstrut" style="height:3.2160200000000003em;"></span><span class="delimsizinginner delim-size4"><span>⎠</span></span></span><span style="top:-2.85801em;"><span class="pstrut" style="height:3.2160200000000003em;"></span><span style="height:1.2160200000000003em;width:0.875em;"><svg width='0.875em' height='1.2160200000000003em' style='width:0.875em' viewBox='0 0 875 1216' preserveAspectRatio='xMinYMin'><path d='M457 0 H583 V1216 H457z M457 0 H583 V1216 H457z'/></svg></span></span><span style="top:-4.71105em;"><span class="pstrut" style="height:3.2160200000000003em;"></span><span class="delimsizinginner delim-size4"><span>⎞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15003em;"><span></span></span></span></span></span></span></span></span></span></span></span></eqn></section></math>
+<h3 id="implementacic3b3n-de-la-representacic3b3n-junto-con-prototipos-de-funciones-a-usar-mc3a1s-adelante">Implementación de la representación junto con prototipos de funciones a usar más adelante</h3>
+<p>La clase quedaría como sigue:</p>
+<pre><code class="code-line language-C++"><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Matriz</span> {</span>
+  <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> _fila_dim, _columna_dim;
+  <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>,<span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt;&gt;&gt; _matriz;
+  <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">GetValue</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> fila, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> columna)</span> <span class="hljs-keyword">const</span></span>;
+ <span class="hljs-keyword">public</span>:
+  Matriz(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> fila_dim, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> columna_dim);
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Print</span><span class="hljs-params">()</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PrintAsMatriz</span><span class="hljs-params">()</span></span>;
+  <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">InsertElement</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> fila, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> columna, <span class="hljs-keyword">int</span> valor)</span></span>;
+  <span class="hljs-keyword">friend</span> Matriz <span class="hljs-keyword">operator</span>+(Matriz <span class="hljs-keyword">const</span> &amp;matriz1, Matriz <span class="hljs-keyword">const</span> &amp;matriz2);
+  <span class="hljs-keyword">friend</span> Matriz <span class="hljs-keyword">operator</span>*(Matriz <span class="hljs-keyword">const</span> &amp;matriz1, Matriz <span class="hljs-keyword">const</span> &amp;matriz2);
+  <span class="hljs-keyword">friend</span> Matriz <span class="hljs-keyword">operator</span>*(<span class="hljs-keyword">int</span> <span class="hljs-keyword">const</span> &amp;value, Matriz <span class="hljs-keyword">const</span> &amp;matriz);
+};
+</div></code></pre>
+<p>Cada matriz tendrá las dimensiones de su fila y su columna, la representación de una matriz dispersa como se explico en la sección anterior. También tenemos su constructor que pide sus dimensiones, se incluye un método para imprimir en dos formatos con la representación y como una matriz normal. De ahí, se incluyen los métodos requeridos junto con el método obtener valor que será de utilidad en la multiplicación.</p>
+<h3 id="insercic3b3n-de-un-valor-dado-su-fila-y-columna">Inserción de un valor dado su fila y columna</h3>
+<p>Tenemos el prototipo <code>void InsertElement(unsigned int fila, unsigned int columna, int valor)</code> que pide la fila, columna y valor que se insertará. Si esa fila y columna existen, entonces sobreescribiremos el valor. En este método debe verificarse que se cumple con que la fila y la columna estén dentro del rango de fila o columna.</p>
+<p>Procedimiento:</p>
+<ol>
+<li>Buscamos la fila</li>
+<li>Si no la encontramos y está vacía la matriz entonces solo lo insertamos como va.</li>
+<li>Si no encontramos la fila que se busca entonces insertaremos la fila en donde tenga una fila menor atras y una mayor adelante.</li>
+<li>Si lo encontramos, entonces buscamos dentro de la lista de columnas si existe la columna.</li>
+<li>Si existe la columna, entonces solo reescribimos el valor.</li>
+<li>Si no existe la columna, entonces insertamos la fila en donde tenga una columna menor detrás y una mayor adelante.</li>
+</ol>
+<p>El código quedaría como sigue:</p>
+<pre><code class="code-line language-C++"><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Matriz::InsertElement</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> fila, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> columna, <span class="hljs-keyword">int</span> valor)</span> </span>{
+
+  <span class="hljs-comment">/*Si los valores no están en donde deben estar entonces no se inserta*/</span>
+  <span class="hljs-keyword">if</span> (!(<span class="hljs-number">0</span> &lt;= fila &lt; <span class="hljs-keyword">this</span>-&gt;_fila_dim &amp;&amp; <span class="hljs-number">0</span> &lt;= columna &lt; <span class="hljs-keyword">this</span>-&gt;_columna_dim &amp;&amp; valor != <span class="hljs-number">0</span>))
+    <span class="hljs-keyword">return</span>;
+
+  <span class="hljs-comment">/*Buscar fila*/</span>
+  <span class="hljs-keyword">auto</span> matrizIter = <span class="hljs-built_in">std</span>::find_if(<span class="hljs-keyword">this</span>-&gt;_matriz.begin(), <span class="hljs-keyword">this</span>-&gt;_matriz.end(),
+   [&amp;fila](<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&gt; &amp;el) {
+     <span class="hljs-keyword">if</span> (el.first == fila) {
+       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+     } <span class="hljs-keyword">else</span> {
+       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+     }
+   });
+
+  <span class="hljs-comment">/*Si no está la fila*/</span>
+  <span class="hljs-keyword">if</span> (matrizIter == <span class="hljs-keyword">this</span>-&gt;_matriz.end()) {
+    <span class="hljs-comment">/*Si está vacio insertar así nomás*/</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>-&gt;_matriz.empty()) {
+      <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt; lista_fila;
+      lista_fila.emplace_back(columna, valor);
+      <span class="hljs-keyword">this</span>-&gt;_matriz.emplace_back(fila, lista_fila);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">/*Si no está vacio entonces buscar después de que fila va*/</span>
+      <span class="hljs-keyword">auto</span> matrizIterFila = <span class="hljs-keyword">this</span>-&gt;_matriz.begin();
+
+      <span class="hljs-comment">/*Buscamos el apuntador donde la fila sea menor al siguiente*/</span>
+      <span class="hljs-keyword">while</span> (matrizIterFila != <span class="hljs-keyword">this</span>-&gt;_matriz.end()) {
+        <span class="hljs-keyword">if</span> (matrizIterFila-&gt;first &lt; fila)
+          ++matrizIterFila;
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">break</span>;
+      }
+
+      <span class="hljs-comment">/*Insertamos la fila*/</span>
+      <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt; lista_fila;
+      lista_fila.emplace_back(columna, valor);
+      <span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&gt; fila_pair;
+      fila_pair.first = fila;
+      fila_pair.second = lista_fila;
+      <span class="hljs-keyword">this</span>-&gt;_matriz.insert(matrizIterFila, fila_pair);
+    }
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">/*Si está la fila entonces solo hay que acomodar en la columna o reescribir el valor*/</span>
+
+    <span class="hljs-comment">/*Buscamos el apuntador donde la columna sea menor al siguiente*/</span>
+    <span class="hljs-keyword">auto</span> listaFilaIter = matrizIter-&gt;second.begin();
+    <span class="hljs-keyword">while</span> (listaFilaIter != matrizIter-&gt;second.end()) {
+      <span class="hljs-keyword">if</span> (listaFilaIter-&gt;first &lt; columna)
+        ++listaFilaIter;
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-comment">/*Si es igual entonces solo cambiar el valor*/</span>
+
+    <span class="hljs-keyword">if</span> (listaFilaIter-&gt;first == columna) {
+      listaFilaIter-&gt;second = valor;
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-comment">/*Si no es igual entonces hay que insertar el valor*/</span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt; lista_fila_valor;
+    lista_fila_valor.first = (<span class="hljs-keyword">int</span>) columna;
+    lista_fila_valor.second = valor;
+    matrizIter-&gt;second.insert(listaFilaIter, lista_fila_valor);
+  }
+}
+</div></code></pre>
+<h3 id="implementacic3b3n-de-suma-de-matrices">Implementación de suma de matrices</h3>
+<p>Para esta implementación haremos uso de la sobrecarga de operadores, para tener un operador + cuando sumemos entre dos clases <code>Matriz</code>.</p>
+<p>Procedimiento:</p>
+<ol>
+<li>Tenemos dos apuntadores al principio de la lista de fila de cada matriz, digamos <code>apuntadorFilas1</code> y <code>apuntadorFilas2</code>.</li>
+<li>Si alguno de los apuntadores ya terminó, entonces agregar todos los restantes del apuntador que no acabó y terminar. Si ambos acabaron entonces terminar.</li>
+<li>Si el valor de fila de alguno de los apuntadores está más adelantado que otro, entonces insertar el atrasado y aumentar su apuntador al siguiente elemento. Regresar a 2.</li>
+<li>Si ambos apuntadores tienen el mismo valor de fila, entonces creamos los apuntadores de la lista de columna de ambas filas.</li>
+<li>Igualmente que los de filas, si alguno de los apuntadores de columna ya terminó entonces agregar los elementos restantes de columna en la fila y terminar regresando a 8. Si ambos apuntadores de columna acabaron entonces terminar regresando a 8.</li>
+<li>Si el valor de columna de alguno de los apuntadores está más adelantado que otro, entonces insertar el atrasado y aumentar su apuntador al siguiente elemento de columna. Regresar a 5.</li>
+<li>Si ambos apuntadores tienen el mismo valor de columna, entonces agregamos en el resultado la suma de sus valores y aumentamos ambos apuntadores de la fila de columna a sus siguientes elementos.</li>
+<li>Aumentar ambos apuntadores de fila y regresar a 2.</li>
+</ol>
+<p>el código queda como sigue:</p>
+<pre><code class="code-line language-C++"><div>Matriz <span class="hljs-keyword">operator</span>+(<span class="hljs-keyword">const</span> Matriz &amp;matriz1, <span class="hljs-keyword">const</span> Matriz &amp;matriz2) {
+
+  <span class="hljs-comment">/*Si las dimensiones no concuerdan entonces es un error*/</span>
+  <span class="hljs-keyword">if</span> (!(matriz1._fila_dim == matriz2._fila_dim &amp;&amp; matriz1._columna_dim == matriz2._columna_dim)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">&quot;No se pueden sumar matrices con dimensiones diferentes&quot;</span>);
+  }
+
+  <span class="hljs-function">Matriz <span class="hljs-title">resultado</span><span class="hljs-params">(matriz1._fila_dim, matriz1._columna_dim)</span></span>;
+
+  <span class="hljs-comment">/*Suma*/</span>
+
+  <span class="hljs-comment">/*Iteradores de las listas de filas*/</span>
+  <span class="hljs-keyword">auto</span> matrix1It = matriz1._matriz.begin();
+  <span class="hljs-keyword">auto</span> matrix2It = matriz2._matriz.begin();
+
+  <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+
+    <span class="hljs-comment">/* Si ya llegamos al final de la matriz 1 y faltan elementos en la matriz 2
+     * entonces copiar los elementos restantes de la matriz 2
+     * */</span>
+    <span class="hljs-keyword">if</span> (matrix1It == matriz1._matriz.end() &amp;&amp; matrix2It != matriz2._matriz.end()) {
+      <span class="hljs-keyword">while</span> (matrix2It != matriz2._matriz.end()) {
+        resultado._matriz.push_back(*matrix2It++);
+      }
+      <span class="hljs-keyword">break</span>;
+      <span class="hljs-comment">/* Si ya llegamos al final de la matriz 2 y faltan elementos en la matriz 1
+       * entonces copiar los elementos restantes de la matriz 1
+       * */</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (matrix1It != matriz1._matriz.end() &amp;&amp; matrix2It == matriz2._matriz.end()) {
+      <span class="hljs-keyword">while</span> (matrix1It != matriz1._matriz.end()) {
+        resultado._matriz.push_back(*matrix1It++);
+      }
+      <span class="hljs-keyword">break</span>;
+      <span class="hljs-comment">/* Si ya llegamos al final de ambos entonces damos por terminado todo
+       * */</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (matrix1It == matriz1._matriz.end() &amp;&amp; matrix2It == matriz2._matriz.end()) {
+      <span class="hljs-keyword">break</span>;
+      <span class="hljs-comment">/*Si ninguno a llegado al final entonces ir avanzando*/</span>
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">/*Alcanzar a la fila con mayor valor*/</span>
+      <span class="hljs-keyword">if</span> (matrix1It-&gt;first &lt; matrix2It-&gt;first) {
+        resultado._matriz.push_back(*matrix1It++);
+        <span class="hljs-keyword">continue</span>;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (matrix1It-&gt;first &gt; matrix2It-&gt;first) {
+        resultado._matriz.push_back(*matrix2It++);
+        <span class="hljs-keyword">continue</span>;
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">/*Suma en lista de filas*/</span>
+        <span class="hljs-keyword">auto</span> fila1 = matrix1It-&gt;second.begin();
+        <span class="hljs-keyword">auto</span> fila2 = matrix2It-&gt;second.begin();
+
+        <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt; filaresult;
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+          <span class="hljs-comment">/*Si una fila acabó entonces hay que copiar las demás restantes*/</span>
+          <span class="hljs-keyword">if</span> (fila1 == matrix1It-&gt;second.end() &amp;&amp; fila2 != matrix2It-&gt;second.end()) {
+            <span class="hljs-keyword">while</span> (fila2 != matrix2It-&gt;second.end()) {
+              filaresult.push_back(*fila2++);
+            }
+            <span class="hljs-keyword">break</span>;
+          } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fila2 == matrix2It-&gt;second.end() &amp;&amp; fila1 != matrix1It-&gt;second.end()) {
+            <span class="hljs-keyword">while</span> (fila1 != matrix1It-&gt;second.end()) {
+              filaresult.push_back(*fila1++);
+            }
+            <span class="hljs-keyword">break</span>;
+          } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fila2 == matrix2It-&gt;second.end() &amp;&amp; fila1 == matrix1It-&gt;second.end()) {
+            <span class="hljs-keyword">break</span>;
+          } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (fila1-&gt;first &lt; fila2-&gt;first) {
+              filaresult.push_back(*fila1++);
+              <span class="hljs-keyword">continue</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fila1-&gt;first &gt; fila2-&gt;first) {
+              filaresult.push_back(*fila2++);
+              <span class="hljs-keyword">continue</span>;
+            } <span class="hljs-keyword">else</span> {
+              <span class="hljs-keyword">int</span> sum = fila1-&gt;second + fila2-&gt;second;
+              filaresult.emplace_back(fila1-&gt;first, sum);
+              ++fila1, ++fila2;
+            }
+          }
+        }
+
+        resultado._matriz.emplace_back(matrix1It-&gt;first, filaresult);
+
+        ++matrix1It, ++matrix2It;
+      }
+    }
+  }
+
+  <span class="hljs-keyword">return</span> resultado;
+}
+</div></code></pre>
+<h3 id="implementacic3b3n-de-bc3basqueda-de-un-valor">Implementación de búsqueda de un valor</h3>
+<p>Esta función tiene el prototipo <code>int Matriz::GetValue(unsigned int fila, unsigned int columna)</code>, nos devuelve el valor que hay en esa fila y columna, si no lo encuentra devuelve 0.</p>
+<p>Procedimiento:</p>
+<ol>
+<li>Si la fila no existe, entonces regresa 0.</li>
+<li>Si existe, entonces dentro de esa fila se busca la columna.</li>
+<li>Si no existe la columna, entonces regresa 0.</li>
+<li>Si existe la columna entonces solo regresamos el valor.</li>
+</ol>
+<p>El código queda como sigue:</p>
+<pre><code class="code-line language-C++"><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Matriz::GetValue</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> fila, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> columna)</span> <span class="hljs-keyword">const</span> </span>{
+  <span class="hljs-keyword">int</span> result = <span class="hljs-number">0</span>;
+  <span class="hljs-comment">/*Si los valores no están en donde deben estar entonces es un error de uso de la función*/</span>
+  <span class="hljs-keyword">if</span> (!(<span class="hljs-number">0</span> &lt;= fila &lt; <span class="hljs-keyword">this</span>-&gt;_fila_dim &amp;&amp; <span class="hljs-number">0</span> &lt;= columna &lt; <span class="hljs-keyword">this</span>-&gt;_columna_dim))
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">&quot;no existe tal fila o columna&quot;</span>);
+
+  <span class="hljs-comment">/*Buscar fila*/</span>
+  <span class="hljs-keyword">auto</span> matrizIter = <span class="hljs-built_in">std</span>::find_if(<span class="hljs-keyword">this</span>-&gt;_matriz.begin(), <span class="hljs-keyword">this</span>-&gt;_matriz.end(),
+   [&amp;fila](<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">list</span>&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt;&gt;&gt; &amp;el) {
+     <span class="hljs-keyword">if</span> (el.first == fila) {
+       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+     } <span class="hljs-keyword">else</span> {
+       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+     }
+   });
+
+  <span class="hljs-keyword">if</span> (matrizIter != <span class="hljs-keyword">this</span>-&gt;_matriz.end()) {
+    <span class="hljs-comment">/*Buscar columna si se encontró la fila*/</span>
+    <span class="hljs-keyword">auto</span> ColumnaIter = <span class="hljs-built_in">std</span>::find_if(matrizIter-&gt;second.begin(), matrizIter-&gt;second.end(),
+    [&amp;columna](<span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt; &amp;el) {
+     <span class="hljs-keyword">if</span> (el.first == columna) {
+       <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+     } <span class="hljs-keyword">else</span> {
+       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+     }
+    });
+    <span class="hljs-comment">/*Regresar valor si se encontró la fila*/</span>
+    <span class="hljs-keyword">if</span>(ColumnaIter != matrizIter-&gt;second.end()){
+      result = ColumnaIter-&gt;second;
+    }
+  }
+
+  <span class="hljs-keyword">return</span> result;
+}
+</div></code></pre>
+<h3 id="implementacic3b3n-de-la-multiplicacic3b3n-entre-matrices-y-multiplicacic3b3n-de-matriz-por-un-escalar">Implementación de la multiplicación entre matrices y multiplicación de matriz por un escalar.</h3>
+<p>Igualmente usaremos sobrecarga de operadores.</p>
+<p>Usamos la función privada anterior, para usar la multiplicación de matriz usual como sigue:</p>
+<pre><code class="code-line language-C++"><div>Matriz <span class="hljs-keyword">operator</span>*(<span class="hljs-keyword">const</span> Matriz &amp;matriz1, <span class="hljs-keyword">const</span> Matriz &amp;matriz2) {
+  <span class="hljs-comment">/*Si las dimensiones no concuerdan entonces es un error*/</span>
+  <span class="hljs-keyword">if</span> (matriz1._columna_dim != matriz2._fila_dim) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">&quot;No se pueden sumar matrices con dimensiones diferentes&quot;</span>);
+  }
+
+  <span class="hljs-function">Matriz <span class="hljs-title">resultado</span><span class="hljs-params">(matriz1._fila_dim, matriz2._columna_dim)</span></span>;
+
+  <span class="hljs-comment">/*Multiplicación*/</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> rowIndex = <span class="hljs-number">0</span>; rowIndex &lt; resultado._fila_dim; ++rowIndex) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> columnIndex = <span class="hljs-number">0</span>; columnIndex &lt; resultado._columna_dim; ++columnIndex) {
+      <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> rowcolumnIndex = <span class="hljs-number">0</span>; rowcolumnIndex &lt; matriz1._columna_dim; ++rowcolumnIndex) {
+        <span class="hljs-keyword">int</span> a = matriz1.GetValue(rowIndex, rowcolumnIndex);
+        <span class="hljs-keyword">int</span> b = matriz2.GetValue(rowcolumnIndex, columnIndex);
+        sum += a*b;
+      }
+      <span class="hljs-keyword">if</span>(sum != <span class="hljs-number">0</span>){
+        resultado.InsertElement(rowIndex, columnIndex, sum);
+      }
+    }
+  }
+
+  <span class="hljs-keyword">return</span> resultado;
+}
+</div></code></pre>
+<p>Y la multiplicación escalar es simplemente iterar toda la estructura multiplicando todos los valores en la lista de columnas por el escalar como sigue:</p>
+<pre><code class="code-line language-C++"><div>Matriz <span class="hljs-keyword">operator</span>*(<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> &amp;value, <span class="hljs-keyword">const</span> Matriz &amp;matriz) {
+
+  <span class="hljs-function">Matriz <span class="hljs-title">resultado</span><span class="hljs-params">(matriz)</span></span>;
+
+  <span class="hljs-comment">/*Multiplicación escalar*/</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;resFila: resultado._matriz) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;resColuma: resFila.second) {
+      resColuma.second *= value;
+    }
+  }
+
+  <span class="hljs-keyword">return</span> resultado;
+}
+</div></code></pre>
+<h3 id="resultados">Resultados</h3>
+<p>Para los resultados usaremos las siguientes matrices, extraidas del archivo con los datos.</p>
+<pre><code class="code-line language-bash"><div>Matriz 2
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 1, 3, 0, 0,
+0, 0, 0, 0, 1, 3, 6,
+7, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+6, 0, 0, 0, 0, 0, 0,
+0, 3, 0, 0, 8, 6, 0,
+
+Matriz 1
+1, 0, 7,
+0, 0, 0,
+0, 4, 0,
+4, 0, 0,
+
+Matriz 0
+0, 5, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 6, 0, 0, 0, 0, 0,
+0, 0, 1, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 4,
+0, 3, 0, 0, 0, 0, 0,
+</div></code></pre>
+<h4 id="suma">Suma</h4>
+<p>Sumamos la matriz 0 y 2, y el resultado obtenido lo sumamos consigo mismo. Obtenemos lo siguiente:</p>
+<pre><code class="code-line language-bash"><div>resultado de suma de la matriz 0 con la 2
+0, 5, 0, 0, 0, 0, 0,
+0, 0, 0, 1, 3, 0, 0,
+0, 6, 0, 0, 1, 3, 6,
+7, 0, 1, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+6, 0, 0, 0, 0, 0, 4,
+0, 6, 0, 0, 8, 6, 0,
+
+resultado de suma consigo mismo
+0, 10, 0, 0, 0, 0, 0,
+0, 0, 0, 2, 6, 0, 0,
+0, 12, 0, 0, 2, 6, 12,
+14, 0, 2, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+12, 0, 0, 0, 0, 0, 8,
+0, 12, 0, 0, 16, 12, 0,
+</div></code></pre>
+<h4 id="multiplicacic3b3n">Multiplicación</h4>
+<p>Multiplicamos la matriz 2 con la 0, y el resultado obtenido lo multiplicamos consigo mismo. Obtenemos lo siguiente:</p>
+<pre><code class="code-line language-bash"><div>resultado de multiplicación de la matriz 2 con la 0
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 1, 0, 0, 0, 0,
+0, 18, 0, 0, 0, 0, 12,
+0, 35, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+0, 30, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 24,
+
+resultado de multiplicación consigo mismo
+0, 0, 0, 20, 60, 0, 0,
+28, 0, 4, 0, 0, 0, 0,
+72, 0, 0, 24, 264, 144, 48,
+0, 164, 0, 0, 4, 12, 24,
+0, 0, 0, 0, 0, 0, 0,
+0, 216, 0, 0, 128, 96, 0,
+144, 0, 0, 24, 72, 0, 96,
+</div></code></pre>
+<p>El cual es correcto corroborando con cualquier herramienta como python o wolfram alpha. Ahora bien por un escalar es el más sencillo de observar que está correcto.</p>
+<p>Multiplicamos la matriz 2 por 5.</p>
+<pre><code class="code-line language-bash"><div>resultado de multiplicación de la matriz 2 con el número 5
+0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 5, 15, 0, 0,
+0, 0, 0, 0, 5, 15, 30,
+35, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0,
+30, 0, 0, 0, 0, 0, 0,
+0, 15, 0, 0, 40, 30, 0,
+</div></code></pre>
+<h3 id="conclusiones">Conclusiones</h3>
+<p>Los resultados muestran el buen comportamiento de las operaciones soportadas y requeridas en el proyecto, sin embargo, a falta de tiempo se puede haber optimizado el código de multiplicación con simplificaciones matemáticas. Aún así, el código tiene alta confiabilidad en este estado.</p>
+
+</body>
+</html>
